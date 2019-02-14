@@ -1,5 +1,5 @@
 [package]
-name = "tesseract-wrapper"
+name = "tesseract_wrapper"
 version = "0.1.0"
 authors = ["Clover <blazelion3@gmail.com>"]
 edition = "2018"
