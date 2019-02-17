@@ -25,6 +25,22 @@ fn run_tesseract_with_args(args: &[&str]){
         arg_string.push_str(s);
     }
 
+    //number of args in array matter
+    //will have to clean up the output file in the end
+    //inputs in order
+    //image, extention, lang, config, nice, return_bytes
+
+    //lets check the length of the array first
+    if args.len() == 6 {
+        // means we have everything
+    } else if args.len() == 5 {
+
+    } else if args.len() == 4 {
+
+    } else if args.len() == 3 {
+        
+    }
+
     let output = if cfg!(target_os = "windows") {
         Command::new("cmd")
         .args(&["/C", ("tesseract ".to_owned() + &arg_string).as_str()])
