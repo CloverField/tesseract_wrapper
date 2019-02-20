@@ -18,9 +18,9 @@ fn run_tesseract() {
             .output()
             .expect("failed to execute process")
     };
-    println!("status: {}", output.status);
-    println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
-    println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+    //println!("status: {}", output.status);
+    //println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
+    //println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
     assert!(output.status.success());
 }
 
@@ -76,13 +76,13 @@ fn run_tesseract_with_args(image: image::DynamicImage, args: &HashMap<&str, &str
             .output()
             .expect("failed to execute process")
     };
-    println!("status: {}", output.status);
-    println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
-    println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+    //println!("status: {}", output.status);
+    //println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
+    //println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
     assert!(output.status.success());
 
     let contents = fs::read_to_string("temp.png_out.txt").expect("unable to read file");
-    println!("Output: {}", contents);
+    //println!("Output: {}", contents);
     clean_up_temp_files().expect("Unable to clean temp files");
     contents
 }
