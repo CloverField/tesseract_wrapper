@@ -24,7 +24,7 @@ fn run_tesseract() {
     assert!(output.status.success());
 }
 
-pub fn run_tesseract_get_result(image: image::DynamicImage, lang: &str, config: &str, nice: &str) {
+pub fn run_tesseract_get_result(image: image::DynamicImage, lang: &str, config: &str, nice: &str) -> String {
     //first thing need to save the image
     //this now needs to be passed to tesseract.
     let mut arg_map = HashMap::new();
@@ -32,7 +32,7 @@ pub fn run_tesseract_get_result(image: image::DynamicImage, lang: &str, config: 
     arg_map.insert("lang", lang);
     arg_map.insert("config", config);
     arg_map.insert("nice", nice);
-    run_tesseract_with_args(image, &arg_map);
+    run_tesseract_with_args(image, &arg_map)
 }
 
 fn run_tesseract_with_args(image: image::DynamicImage, args: &HashMap<&str, &str>) -> String {
