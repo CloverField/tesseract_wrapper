@@ -35,7 +35,7 @@ pub fn run_tesseract_get_result(image: image::DynamicImage, lang: &str, config: 
     run_tesseract_with_args(image, &arg_map);
 }
 
-fn run_tesseract_with_args(image: image::DynamicImage, args: &HashMap<&str, &str>) {
+fn run_tesseract_with_args(image: image::DynamicImage, args: &HashMap<&str, &str>) -> String {
     image.save("temp.png").expect("Unable to save image");
     //let srcdir = PathBuf::from("temp.png");
     //let path = fs::canonicalize(&srcdir).expect("unable to find path");
@@ -82,6 +82,14 @@ fn run_tesseract_with_args(image: image::DynamicImage, args: &HashMap<&str, &str
 
     let contents = fs::read_to_string("temp.png_out.txt").expect("unable to read file");
     println!("Output: {}", contents);
+    clean_up_temp_files().expect("Unable to clean temp files");
+    contents
+}
+
+fn clean_up_temp_files() -> std::io::Result<()> {
+    fs::remove_file("temp.png")?;
+    fs::remove_file("temp.png_out.txt")?;
+    Ok(())
 }
 
 #[cfg(test)]
@@ -100,7 +108,10 @@ mod tests {
 
     #[test]
     fn test_run_tesseract_with_args() {
-        let img = image::open("C:\\Users\\blaze\\Source\\Rust\\projects\\tesseract_wrapper\\test.png").expect("unable to open image");
-        run_tesseract_get_result(img, "eng", "", "");
+        let srcdir = PathBuf::from("test.png");
+        let path = fs::canonicalize(&srcdir).expect("unable to find test image");
+        let img = image::open(path).expect("unable to open image");
+        let output = run_tesseract_get_result(img, "eng", "", "");
+        println!("{:?}", output);
     }
 }
