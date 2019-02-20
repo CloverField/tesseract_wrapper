@@ -1,9 +1,9 @@
 extern crate image;
 
 use std::collections::HashMap;
-use std::process::Command;
-use std::path::PathBuf;
 use std::fs;
+use std::path::PathBuf;
+use std::process::Command;
 
 fn run_tesseract() {
     let output = if cfg!(target_os = "windows") {
@@ -43,14 +43,15 @@ fn run_tesseract_with_args(image: image::DynamicImage, args: &HashMap<&str, &str
     //println!("{:?}", path);
     let mut arg_string = "".to_owned();
     arg_string.push_str(path.to_str().expect("Invaid Path")); //inputfilename
-    arg_string.push_str(" "); 
-    arg_string.push_str("temp.png_out");// output filename
-    arg_string.push_str(" "); 
+    arg_string.push_str(" ");
+    arg_string.push_str("temp.png_out"); // output filename
+    arg_string.push_str(" ");
     arg_string.push_str("-l");
-    arg_string.push_str(" "); 
+    arg_string.push_str(" ");
     arg_string.push_str(args.get("lang").expect("Unable to find arg")); //lang
-    arg_string.push_str(" "); 
+    arg_string.push_str(" ");
     arg_string.push_str(args.get("config").expect("Unable to find arg")); //config
+    
     //println!("{:?}", arg_string);
     // 'input_filename': input_filename,
     // 'output_filename_base': temp_name + '_out',
