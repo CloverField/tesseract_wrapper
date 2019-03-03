@@ -24,7 +24,12 @@ fn run_tesseract() {
     assert!(output.status.success());
 }
 
-pub fn run_tesseract_get_result(image: image::DynamicImage, lang: &str, config: &str, nice: &str) -> String {
+pub fn run_tesseract_get_result(
+    image: image::DynamicImage,
+    lang: &str,
+    config: &str,
+    nice: &str,
+) -> String {
     //first thing need to save the image
     //this now needs to be passed to tesseract.
     let mut arg_map = HashMap::new();
@@ -51,7 +56,7 @@ fn run_tesseract_with_args(image: image::DynamicImage, args: &HashMap<&str, &str
     arg_string.push_str(args.get("lang").expect("Unable to find arg")); //lang
     arg_string.push_str(" ");
     arg_string.push_str(args.get("config").expect("Unable to find arg")); //config
-    
+
     //println!("{:?}", arg_string);
     // 'input_filename': input_filename,
     // 'output_filename_base': temp_name + '_out',
