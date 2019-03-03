@@ -1,9 +1,13 @@
 extern crate image;
+extern crate tempdir;
 
 use std::collections::HashMap;
 use std::fs;
+use std::fs::File;
+use std::io::{self, Write};
 use std::path::PathBuf;
 use std::process::Command;
+use tempdir::TempDir;
 
 fn run_tesseract() {
     let output = if cfg!(target_os = "windows") {
@@ -98,9 +102,24 @@ fn clean_up_temp_files() -> std::io::Result<()> {
     Ok(())
 }
 
+fn run_tesseract_with_tempdir(image: image::DynamicImage,filename: &str) -> Result<(String), io::Error> {
+    let tmp_dir = TempDir::new("example")?;
+
+    let file_path = tmp_dir.path().join(filename);
+    image.save(tmp_dir.path().join("temp.png"))?;
+    let mut temp_file = File::create(file_path)?;
+
+    writeln!(temp_file, "output from tesseract")?;
+
+    let contents = fs::read_to_string(tmp_dir.path().join(filename))?;
+    drop(temp_file);
+    tmp_dir.close()?;
+    Ok(contents)
+}
+
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::{fs, image, run_tesseract, run_tesseract_get_result, PathBuf};
 
     #[test]
     fn it_works() {
