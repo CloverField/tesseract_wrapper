@@ -28,12 +28,7 @@ fn run_tesseract() {
     assert!(output.status.success());
 }
 
-pub fn run_tesseract_get_result(
-    image: image::DynamicImage,
-    lang: &str,
-    config: &str,
-    nice: &str,
-) -> String {
+pub fn run_tesseract_get_result(image: image::DynamicImage, lang: &str, config: &str, nice: &str) -> String {
     //first thing need to save the image
     //this now needs to be passed to tesseract.
     let mut arg_map = HashMap::new();
@@ -104,9 +99,9 @@ fn clean_up_temp_files() -> std::io::Result<()> {
 
 fn run_tesseract_with_tempdir(image: image::DynamicImage,filename: &str) -> Result<(String), io::Error> {
     let tmp_dir = TempDir::new("example")?;
-
     let file_path = tmp_dir.path().join(filename);
     image.save(tmp_dir.path().join("temp.png"))?;
+    
     let mut temp_file = File::create(file_path)?;
 
     writeln!(temp_file, "output from tesseract")?;
@@ -119,7 +114,7 @@ fn run_tesseract_with_tempdir(image: image::DynamicImage,filename: &str) -> Resu
 
 #[cfg(test)]
 mod tests {
-    use super::{fs, image, run_tesseract, run_tesseract_get_result, PathBuf};
+    use super::*;
 
     #[test]
     fn it_works() {
@@ -137,6 +132,15 @@ mod tests {
         let path = fs::canonicalize(&srcdir).expect("unable to find test image");
         let img = image::open(path).expect("unable to open image");
         let output = run_tesseract_get_result(img, "eng", "", "");
+        println!("{:?}", output);
+    }
+
+    #[test]
+    fn test_tempdir_tesseract() {
+        let srcdir = PathBuf::from("test.png");
+        let path = fs::canonicalize(&srcdir).expect("unable to find test image");
+        let img = image::open(path).expect("unable to open image");
+        let output = run_tesseract_with_tempdir(img, "eng");
         println!("{:?}", output);
     }
 }
